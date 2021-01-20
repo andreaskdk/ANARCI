@@ -52,7 +52,7 @@ class Install(install):
 
 
 setup(name='anarci',
-      version='1.3',
+      version='1.3.1',
       description='Antibody Numbering and Receptor ClassIfication',
       author='James Dunbar',
       author_email='opig@stats.ox.ac.uk',
