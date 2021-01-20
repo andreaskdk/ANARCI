@@ -332,14 +332,7 @@ def _parse_hmmer_query(query, bit_score_threshold=80, hmmer_species=None):
         # If we have specified a species, check to see we have hits for that species
         # Otherwise revert back to using any species
         if hmmer_species:
-            #hit_correct_species = [hsp for hsp in query.hsps if hsp.hit_id.startswith(hmmer_species) and hsp.bitscore >= bit_score_threshold]
-            hit_correct_species = []
-            for hsp in query.hsps:
-                if hsp.bitscore >= bit_score_threshold:
-                    for species in hmmer_species:
-                        if hsp.hit_id.startswith(species):
-                            hit_correct_species.append(hsp)
-
+            hit_correct_species = [hsp for hsp in query.hsps if hsp.hit_id.startswith(hmmer_species) and hsp.bitscore >= bit_score_threshold]
             if hit_correct_species:
                 hsp_list = hit_correct_species
             else:
@@ -764,7 +757,7 @@ def check_for_j( sequences, alignments, scheme ):
 # Main function for ANARCI 
 # Name conflict with function, module and package is kept for legacy unless issues are reported in future. 
 def anarci(sequences, scheme="imgt", database="ALL", output=False, outfile=None, csv=False, allow=set(["H","K","L","A","B","G","D"]), 
-           hmmerpath="", ncpu=None, assign_germline=False, allowed_species=None, bit_score_threshold=80):
+           hmmerpath="", ncpu=None, assign_germline=False, allowed_species=None, bit_score_threshold=80, hmmer_species=None):
     """
     The main function for anarci. Identify antibody and TCR domains, number them and annotate their germline and species. 
 
@@ -827,7 +820,7 @@ def anarci(sequences, scheme="imgt", database="ALL", output=False, outfile=None,
 
 
     # Perform the alignments of the sequences to the hmm database
-    alignments = run_hmmer(sequences,hmm_database=database,hmmerpath=hmmerpath,ncpu=ncpu,bit_score_threshold=bit_score_threshold,hmmer_species=allowed_species )   
+    alignments = run_hmmer(sequences,hmm_database=database,hmmerpath=hmmerpath,ncpu=ncpu,bit_score_threshold=bit_score_threshold,hmmer_species=hmmer_species )   
      
     # Check the numbering for likely very long CDR3s that will have been missed by the first pass.
     # Modify alignments in-place
